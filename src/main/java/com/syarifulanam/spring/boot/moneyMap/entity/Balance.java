@@ -39,4 +39,6 @@ public class Balance {
     @UpdateTimestamp // bikin data waktu update otomatis
     private Timestamp updatedAt;
 
+    @Column(name = "notes")
+    private String notes;
 }

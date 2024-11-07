@@ -36,6 +36,7 @@ public class BalanceService {
 
         existingBalance.setName(balance.getName());
         existingBalance.setAmount(balance.getAmount());
+        existingBalance.setNotes(balance.getNotes());
 
         return balanceRepository.save(existingBalance); // edit / ubah data bisa pake "save"
     }

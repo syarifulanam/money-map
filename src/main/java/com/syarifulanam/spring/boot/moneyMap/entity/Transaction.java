@@ -46,4 +46,7 @@ public class Transaction {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    @Column(name = "notes")
+    private String notes;
 }

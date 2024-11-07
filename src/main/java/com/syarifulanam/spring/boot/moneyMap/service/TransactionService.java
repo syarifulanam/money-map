@@ -38,6 +38,7 @@ public class TransactionService {
         existingTransaction.setAmount(transaction.getAmount());
         existingTransaction.setBalances_id(transaction.getBalances_id());
         existingTransaction.setUser_id(transaction.getUser_id());
+        existingTransaction.setNotes(transaction.getNotes());
 
         return transactionRepository.save(existingTransaction);
     }
