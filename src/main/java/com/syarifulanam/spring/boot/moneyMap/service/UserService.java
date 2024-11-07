@@ -1,8 +1,12 @@
 package com.syarifulanam.spring.boot.moneyMap.service;
 
+import com.syarifulanam.spring.boot.moneyMap.dto.UserModel;
 import com.syarifulanam.spring.boot.moneyMap.entity.User;
+import com.syarifulanam.spring.boot.moneyMap.exceptions.ItemAlreadyExistsException;
 import com.syarifulanam.spring.boot.moneyMap.repository.UserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public User saveUser(User user) {
         return userRepository.save(user);
@@ -43,5 +50,15 @@ public class UserService {
     public void deleteUser(Long userId) {
         User existingUser = getUserById(userId);
         userRepository.deleteById(existingUser.getId());
+    }
+
+    public User createUser(UserModel userModel) {
+        if (userRepository.existsByEmail(userModel.getEmail())) {
+            throw new ItemAlreadyExistsException("User is already registered with email " + userModel.getEmail());
+        }
+        User newUser = new User();
+        BeanUtils.copyProperties(userModel, newUser);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        return userRepository.save(newUser);
     }
 }
