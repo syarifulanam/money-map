@@ -1,10 +1,13 @@
 package com.syarifulanam.spring.boot.moneyMap.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
@@ -25,9 +28,15 @@ public class Balance {
     @Column(name = "amount")
     private BigDecimal amount;
 
-    @JsonProperty("user_id")
-    @Column(name = "user_id")
-    private Long userId;
+    // NOTE: Bidirectional: Both entities are aware of the relationship.
+    // NOTE: Unidirectional: Only one entity knows about the relationship. (we use this)
+    // NOTE: LAZY: Fetches the related entity only when it’s accessed.
+    // NOTE: OnDeleteAction.CASCADE: if a parent entity is deleted, all its related child entities are automatically deleted
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private User user;
 
     @JsonProperty("created_at")
     @Column(name = "created_at", nullable = false, updatable = false)

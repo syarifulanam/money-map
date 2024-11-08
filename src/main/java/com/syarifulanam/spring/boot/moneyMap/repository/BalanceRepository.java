@@ -12,6 +12,6 @@ public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
     Optional<Balance> findByName(String name);
 
-    List<Balance> findByUserId(long id);
+    List<Balance> findByUserId(long userId);
 
 }
