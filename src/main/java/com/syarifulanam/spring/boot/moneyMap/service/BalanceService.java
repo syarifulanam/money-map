@@ -14,12 +14,17 @@ public class BalanceService {
     @Autowired
     private BalanceRepository balanceRepository;
 
+    @Autowired
+    UserService userService;
+
     public Balance saveBalance(Balance balance) {
+        balance.setUser(userService.getLoggedInUser());
         return balanceRepository.save(balance); // "save" untuk simpan data
     }
 
     public List<Balance> getAllBalance() {
-        return balanceRepository.findAll();
+        //return balanceRepository.findAll(); // note : untuk munculin semua data tanpa terkecuali
+        return balanceRepository.findByUserId(userService.getLoggedInUser().getId()); // munculin data untuk userId tertentu
     }
 
     public Balance getBalanceById(long balanceId) {
@@ -33,41 +38,40 @@ public class BalanceService {
 
 
     /**
-     *
      * Balance existingBalance = getBalanceById(balanceId);
      * BEFORE
      * {
-     *     "id": 1,
-     *     "name": "Saldo Gopay",
-     *     "amount": 374400.00,
-     *     "notes": null,
-     *     "user_id": 13,
-     *     "created_at": "2024-11-07T14:26:01.423+00:00",
-     *     "updated_at": "2024-11-07T14:26:01.423+00:00"
+     * "id": 1,
+     * "name": "Saldo Gopay",
+     * "amount": 374400.00,
+     * "notes": null,
+     * "user_id": 13,
+     * "created_at": "2024-11-07T14:26:01.423+00:00",
+     * "updated_at": "2024-11-07T14:26:01.423+00:00"
      * }
-     *
+     * <p>
      * AFTER
      * {
-     *     "name" : "Saldo Shopeepay",
-     *     "amount" : 933500.00,
-     *     "notes" : "saldo untu belanaja"
+     * "name" : "Saldo Shopeepay",
+     * "amount" : 933500.00,
+     * "notes" : "saldo untu belanaja"
      * }
-     *
-     *  existingBalance.setName("Saldo Shopeepay");
-     *  existingBalance.setAmount(933500.00);
-     *  existingBalance.setNotes("saldo untu belanaja");
-     *
-     *  balanceRepository.save(existingBalance);
+     * <p>
+     * existingBalance.setName("Saldo Shopeepay");
+     * existingBalance.setAmount(933500.00);
+     * existingBalance.setNotes("saldo untu belanaja");
+     * <p>
+     * balanceRepository.save(existingBalance);
      * {
-     *     "id": 1,
-     *     "name": "Saldo Shopeepay",
-     *     "amount": 933500.00,
-     *     "notes": "saldo untu belanaja",
-     *     "user_id": 13,
-     *     "created_at": "2024-11-07T14:26:01.423+00:00",
-     *     "updated_at": "2024-11-07T14:30:17.297+00:00"
+     * "id": 1,
+     * "name": "Saldo Shopeepay",
+     * "amount": 933500.00,
+     * "notes": "saldo untu belanaja",
+     * "user_id": 13,
+     * "created_at": "2024-11-07T14:26:01.423+00:00",
+     * "updated_at": "2024-11-07T14:30:17.297+00:00"
      * }
-     * */
+     */
     public Balance updateBalance(long balanceId, Balance balance) {
         Balance existingBalance = getBalanceById(balanceId); // method untuk melakukan pencarian data balance dari id-balance
 

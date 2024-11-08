@@ -28,7 +28,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @JsonIgnore
+    @JsonIgnore // JsonIgnore: supaya password tidak muncul di postman
     private String password;
 
     @Column(name = "created_at", nullable = false, updatable = false)
