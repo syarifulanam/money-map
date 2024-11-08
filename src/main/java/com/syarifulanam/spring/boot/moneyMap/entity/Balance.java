@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "balances") // DOMPET kita, atau ATM kita
-@Data
+@Data // di sini itu sebenarnya sudah ada setter getter
 public class Balance {
 
     @Id // untuk menandakan dia PRIMARY KEY
