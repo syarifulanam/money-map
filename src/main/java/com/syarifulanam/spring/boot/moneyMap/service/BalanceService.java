@@ -29,9 +29,12 @@ public class BalanceService {
 
     public Balance getBalanceById(long balanceId) {
         // method untuk melakukan pencarian data balance dari id-balance
-        Optional<Balance> existingBalance = balanceRepository.findById(balanceId); // ketika mencari data WHERE id
+//        Optional<Balance> existingBalance = balanceRepository.findById(balanceId); // ketika mencari data WHERE id
+
+        Optional<Balance> existingBalance = balanceRepository.findByIdAndUserId(balanceId, userService.getLoggedInUser().getId()); // ketika mencari data WHERE id
+
         if (existingBalance.isPresent()) { // apakah data balance ada atau tidak null ?
-            return existingBalance.get();
+            return existingBalance.get(); // return munculin ke postman response
         }
         throw new RuntimeException("Data tidak ditemukan"); // exception throw
     }
@@ -83,6 +86,11 @@ public class BalanceService {
     }
 
     public void deleteBalance(long balanceId) {
+        // bikin kodingannya dia harus cek dulu
+        // jika ada maka hapus
+        // jika gak ada maka munculin error --> throw new RuntimeException("Data tidak ditemukan"); // exception throw
+
+
         Balance existingBalance = getBalanceById(balanceId);
         balanceRepository.deleteById(existingBalance.getId());
     }
