@@ -27,12 +27,9 @@ public class BalanceService {
         return balanceRepository.findByUserId(userService.getLoggedInUser().getId()); // munculin data untuk userId tertentu
     }
 
-    public Balance getBalanceById(long balanceId) {
-        // method untuk melakukan pencarian data balance dari id-balance
-//        Optional<Balance> existingBalance = balanceRepository.findById(balanceId); // ketika mencari data WHERE id
-
-        Optional<Balance> existingBalance = balanceRepository.findByIdAndUserId(balanceId, userService.getLoggedInUser().getId()); // ketika mencari data WHERE id
-
+    public Balance getBalanceByIdAndUserId(long balanceId) {
+        // ketika mencari data WHERE balanceid and userid
+        Optional<Balance> existingBalance = balanceRepository.findByIdAndUserId(balanceId, userService.getLoggedInUser().getId());
         if (existingBalance.isPresent()) { // apakah data balance ada atau tidak null ?
             return existingBalance.get(); // return munculin ke postman response
         }
@@ -76,7 +73,7 @@ public class BalanceService {
      * }
      */
     public Balance updateBalance(long balanceId, Balance balance) {
-        Balance existingBalance = getBalanceById(balanceId); // method untuk melakukan pencarian data balance dari id-balance
+        Balance existingBalance = getBalanceByIdAndUserId(balanceId); // method untuk melakukan pencarian data balance dari id-balance
 
         existingBalance.setName(balance.getName());
         existingBalance.setAmount(balance.getAmount());
@@ -86,12 +83,7 @@ public class BalanceService {
     }
 
     public void deleteBalance(long balanceId) {
-        // bikin kodingannya dia harus cek dulu
-        // jika ada maka hapus
-        // jika gak ada maka munculin error --> throw new RuntimeException("Data tidak ditemukan"); // exception throw
-
-
-        Balance existingBalance = getBalanceById(balanceId);
+        Balance existingBalance = getBalanceByIdAndUserId(balanceId);
         balanceRepository.deleteById(existingBalance.getId());
     }
 }
