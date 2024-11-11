@@ -3,9 +3,12 @@ package com.syarifulanam.spring.boot.moneyMap.service;
 import com.syarifulanam.spring.boot.moneyMap.dto.UserModel;
 import com.syarifulanam.spring.boot.moneyMap.entity.User;
 import com.syarifulanam.spring.boot.moneyMap.exceptions.ItemAlreadyExistsException;
+import com.syarifulanam.spring.boot.moneyMap.exceptions.ResourceNotFoundException;
 import com.syarifulanam.spring.boot.moneyMap.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +63,17 @@ public class UserService {
         BeanUtils.copyProperties(userModel, newUser);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         return userRepository.save(newUser);
+    }
+
+    public User getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return user.get();
+        }
+
+        throw new ResourceNotFoundException("User not found");
     }
 }
