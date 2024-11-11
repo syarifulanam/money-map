@@ -32,7 +32,7 @@ public class BalanceController {
 
     @GetMapping("/balances/{id}")
     public Balance getBalanceById(@PathVariable(name = "id") long id) {
-        return balanceService.getBalanceById(id);
+        return balanceService.getBalanceByIdAndUserId(id);
     }
 
     @PatchMapping("/balances/{id}")
