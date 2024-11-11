@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.syarifulanam</groupId>
-	<artifactId>spring-boot-moneyMap</artifactId>
+	<artifactId>moneymap</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-moneyMap</name>
+	<name>moneymap</name>
 	<description>spring boot moneymap</description>
 	<url/>
 	<licenses>
