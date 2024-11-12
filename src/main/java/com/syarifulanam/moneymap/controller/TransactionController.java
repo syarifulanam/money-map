@@ -16,8 +16,8 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping("/transactions")
-    public ResponseEntity<Transaction> saveTransaction(@RequestBody Transaction transaction) {
-        return new ResponseEntity<>(transactionService.saveTransaction(transaction), HttpStatus.CREATED);
+    public ResponseEntity<Transaction> saveTransaction(@RequestBody Transaction transaction, @RequestParam Long balancesId ) {
+        return new ResponseEntity<>(transactionService.saveTransaction(transaction, balancesId), HttpStatus.CREATED);
     }
 
     @GetMapping("/transactions")

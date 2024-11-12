@@ -14,14 +14,24 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public Transaction saveTransaction(Transaction transaction) {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private BalanceService balanceService;
+
+    public Transaction saveTransaction(Transaction transaction, Long balancesId) {
+        transaction.setUser(userService.getLoggedInUser());
+        transaction.setBalance(balanceService.getBalanceById(balancesId));
         return transactionRepository.save(transaction);
     }
 
+    // getAllTransaction untuk user token  yang login aja
     public List<Transaction> getAllTransaction() {
         return transactionRepository.findAll();
     }
 
+    // getTransactionById untuk user token  yang login aja
     public Transaction getTransactionById(Long transactionId) {
         Optional<Transaction> existingTransaction = transactionRepository.findById(transactionId);
         if (existingTransaction.isPresent()) {
@@ -36,8 +46,6 @@ public class TransactionService {
         existingTransaction.setName(transaction.getName());
         existingTransaction.setType(transaction.getType());
         existingTransaction.setAmount(transaction.getAmount());
-        existingTransaction.setBalances_id(transaction.getBalances_id());
-        existingTransaction.setUser_id(transaction.getUser_id());
         existingTransaction.setNotes(transaction.getNotes());
 
         return transactionRepository.save(existingTransaction);
