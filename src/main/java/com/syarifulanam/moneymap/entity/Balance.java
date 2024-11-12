@@ -32,10 +32,10 @@ public class Balance {
     // NOTE: Unidirectional: Only one entity knows about the relationship. (we use this)
     // NOTE: LAZY: Fetches the related entity only when it’s accessed.
     // NOTE: OnDeleteAction.CASCADE: if a parent entity is deleted, all its related child entities are automatically deleted
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private User user;
 
     @JsonProperty("created_at")
